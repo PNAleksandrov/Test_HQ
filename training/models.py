@@ -2,21 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# создание сущности продукта
 class Product(models.Model):
     name = models.CharField(max_length=255)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
-# создание доступа к продукту
-class AccessToProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    can_view = models.BooleanField(default=False)
-    can_edit = models.BooleanField(default=False)
+    def __str__(self):
+        return self.name
 
 
-# создание урока
 class Lesson(models.Model):
     title = models.CharField(max_length=255)
     link = models.URLField()
@@ -24,7 +17,11 @@ class Lesson(models.Model):
     products = models.ManyToManyField(Product, related_name='lessons')
 
 
-# указание, что видео просмотрено
+class AccessToProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 class LessonViewing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
@@ -37,10 +34,10 @@ class LessonViewing(models.Model):
             duration = (self.end_time - self.start_time).total_seconds()
             total_duration = self.lesson.duration_seconds
             if (duration / total_duration) >= 0.8:
-                self.is_viewed = True
+                self.is_viewed = 'Просмотрено'
             else:
-                self.is_viewed = False
+                self.is_viewed = 'Не просмотрено'
         else:
-            self.is_viewed = False
+            self.is_viewed = 'Не просмотрено'
 
         self.save()
