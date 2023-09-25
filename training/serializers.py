@@ -17,7 +17,7 @@ class LessonSerializer(serializers.ModelSerializer):
 class LessonViewingSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonViewing
-        fields = ('lesson', 'is_viewed', 'start_time', 'end_time')
+        fields = ('user', 'lesson', 'is_viewed', 'start_time', 'end_time')
 
 
 class LessonInfoSerializer(serializers.ModelSerializer):

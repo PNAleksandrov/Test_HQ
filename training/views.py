@@ -12,19 +12,19 @@ class LessonListView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        accessible_products = Product.objects.filter(owner=user)
-        return LessonViewing.objects.filter(products__in=accessible_products)
+        queryset = Lesson.objects.filter(title=user)
+        return queryset
 
 
 class ProductLessonList(generics.ListAPIView):
-    queryset = Lesson.objects.all()
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
+        owner = self.request.user
         product_id = self.kwargs['product_id']
-        return Lesson.objects.filter(products=product_id, products__access__user=self.request.user)
+        return Product.objects.filter(owner_id=product_id, owner=self.request.user)
 
 
 # @api_view(['GET'])
