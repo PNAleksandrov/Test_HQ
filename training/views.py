@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from rest_framework import generics
-from rest_framework.decorators import api_view
+# from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
-from .models import LessonViewing, Lesson, Product, AccessToProduct
-from .serializers import LessonViewingSerializer, LessonSerializer, ProductSerializer
+from .models import Lesson, Product
+from .serializers import LessonViewingSerializer, ProductSerializer
 
 
 class LessonListView(generics.ListAPIView):
